@@ -3,6 +3,11 @@
 //	include the D3DX9 library
 #include <d3dx9.h>
 
+class GameObject {
+	protected:
+		int c;
+};
+
 class Player {
 	public:
 		LPCSTR texturePath;
@@ -33,6 +38,13 @@ class Player {
 		float playerRotationSpeed;
 
 		// functions
-		void Init();
+		void Init(int playerNumber, int PlayerXPosition, int PlayerYPosition);
+		void setPlayerAccelerationX(double X);
+		void setPlayerAccelerationY(double Y);
 
+};
+
+class StaticObjects {
+	public:
+		int x;
 };

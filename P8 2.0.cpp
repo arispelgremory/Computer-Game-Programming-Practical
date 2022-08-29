@@ -51,7 +51,7 @@ LPCSTR texturePath = "Assets/pointer.png";
 LPCSTR texturePath1 = "Assets/space.png";
 
 //Mouse Texture stuff
-LPDIRECT3DTEXTURE9 mouseTexture = NULL;
+// LPDIRECT3DTEXTURE9 mouseTexture = NULL;
 RECT mouseRect;
 RECT mouseColRect;
 D3DXVECTOR3 mousePosition;
@@ -73,11 +73,15 @@ RECT textRect;
 HRESULT hr;
 
 // Player Actions
-boolean leftKeyPressed = false;
-boolean rightKeyPressed = false;
-boolean upKeyPressed = false;
-boolean downKeyPressed = false;
-boolean spaceKeyPressed = false;
+bool leftKeyPressed = false;
+bool rightKeyPressed = false;
+bool upKeyPressed = false;
+bool downKeyPressed = false;
+
+bool aKeyPressed = false;
+bool dKeyPressed = false;
+bool wKeyPressed = false;
+bool sKeyPressed = false;
 
 // Players
 Player* player1 = NULL;
@@ -95,77 +99,27 @@ int green = 0;
 int blue = 0;
 
 //	Window Procedure, for event handling
-LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) { // Get messages from the OS(mouse was move,keyboard was press)
-	switch (message) {
+LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+	switch (message)
+	{
 		//	The message is post when we destroy the window.
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
-	/*
 	case WM_KEYDOWN:
-		switch (wParam){
-		/*
+	{
+		switch (wParam)
+		{
 		case VK_ESCAPE:
 			PostQuitMessage(0);
 			break;
-		case VK_LEFT:
-			leftKeyPressed = true;
-			currentDirection = moveLeft;
-			cout << "lEFT KEY WAS PRESSED" << endl;
-			break;
-		case VK_RIGHT:
-			rightKeyPressed = true;
-			currentDirection = moveRight;
-			cout << "RIGHT KEY WAS PRESSED" << endl;
-			break;
-		case VK_UP:
-			upKeyPressed = true;
-			currentDirection = moveUp;
-			cout << "UP KEY WAS PRESSED" << endl;
-			break;
-		case VK_DOWN:
-			downKeyPressed = true;
-			currentDirection = moveDown;
-			cout << "DOWN KEY WAS PRESSED" << endl;
-			break;
-		case VK_SPACE:
-			spaceKeyPressed = true;
-
-			break;
-		
-
-		case 'R':
-			red += 5;
-			cout << "Red: " << red<< endl;
-			break;
-		case 'G':
-			green += 5;
-			cout << "Green: " << green << endl;
-			break;
-		case 'B':
-			blue += 5;
-			cout << "Blue: " << blue << endl;
-			break;
-		case '1':
-			texturePath = "Assets/bg1.png";
-			cout << "Shit" << endl;
-			break;
-		default:
-			break;
 		}
-		*/
-		break;
-		//	Default handling for other messages.
-	/*
-	case WM_MOUSEMOVE:
-		position.y = (short)HIWORD(lParam);
-		position.x = (short)LOWORD(lParam);
-		break;
-	*/
 	default:
-		return DefWindowProc(hWnd, message, wParam, lParam); // Return messages back to the OS
+		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	return 0;
+	}
 }
 
 bool CollisionDetection(RECT A, RECT B) {
@@ -185,9 +139,19 @@ bool CollisionDetection(RECT A, RECT B) {
 	return false;
 }
 
+bool CircleCollisionDetection(int radiusA, int radiusB, D3DXVECTOR2 positionA, D3DXVECTOR2 positionB) {
+	
+	D3DXVECTOR2 distance = positionB - positionA;
+	if (radiusA + radiusB < D3DXVec2Length(&distance)) {
+		return false;
+	}
+	return true;
+}
+
 void CreateMyWindow(){
 	//	Set all members in wndClass to 0.
 	ZeroMemory(&wndClass, sizeof(wndClass));
+
 	//	Filling wndClass. You are to refer to MSDN for each of the members details.
 	//	These are the fundamental structure members to be specify, in order to create your window.
 	wndClass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
@@ -209,6 +173,7 @@ void CreateMyWindow(){
 void CreateMyDX() {
 	//	Define Direct3D 9.
 	IDirect3D9* direct3D9 = Direct3DCreate9(D3D_SDK_VERSION);
+
 	//	Define how the screen presents.
 	D3DPRESENT_PARAMETERS d3dPP;
 	ZeroMemory(&d3dPP, sizeof(d3dPP));
@@ -305,13 +270,12 @@ void CreateMyDInput() {
 
 void InitializeLevel() {
 	//	Create texture. Study the documentation.
-	hr = D3DXCreateTextureFromFile(d3dDevice, texturePath, &mouseTexture);
-	if (FAILED(hr)) {
-		cout << "Create mouse texture failed!" << endl;
-	}
+	//hr = D3DXCreateTextureFromFile(d3dDevice, texturePath, &mouseTexture);
+	//if (FAILED(hr)) {
+		//cout << "Create mouse texture failed!" << endl;
+	//}
 
-	hr = D3DXCreateTextureFromFileEx(d3dDevice, texturePath1, D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, NULL, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED,
-		D3DX_DEFAULT, D3DX_DEFAULT, D3DCOLOR_XRGB(255, 255, 255), NULL, NULL, &playerTexture);
+	hr = D3DXCreateTextureFromFile(d3dDevice, texturePath1, &playerTexture);
 	//hr = D3DXCreateTextureFromFileEx(/* Your Direct3D device */, "01.bmp", D3DX_DEFAULT, D3DX_DEFAULT, 
 	//									D3DX_DEFAULT, NULL, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, 
 	//									D3DX_DEFAULT, D3DX_DEFAULT, D3DCOLOR_XRGB(255, 255, 255), 
@@ -323,9 +287,9 @@ void InitializeLevel() {
 
 	// Mouse Initializations
 	mouseRect.left = 0;
-	mouseRect.right = 35;
+	mouseRect.right = 32;
 	mouseRect.top = 0;
-	mouseRect.bottom = 35;
+	mouseRect.bottom = 32;
 	
     currentXpos = WindowWidth / 2;
 	currentYpos = WindowHeight / 2;
@@ -354,8 +318,8 @@ void InitializeLevel() {
 	player1 = new Player();
 	player2 = new Player();
 
-	player1->Init();
-	player2->Init();
+	player1->Init(1, 100, 300);
+	player2->Init(2, 600, 300);
 
 	/*
 	playerTextureWidth = 64;
@@ -372,35 +336,35 @@ void InitializeLevel() {
 	player1->playerVelocity = D3DXVECTOR2(0, 0);
 	player1->playerAcceleration = D3DXVECTOR2(0, 0);
 	player1EnginerForce = 1;
-	player1Direction = 0;
-	player1Mass = 1;
-	player1FrameCounter = 0;
-	player1Number = 1;
+	player1->playerDirection = 0;
+	player1->playerMass = 1;
+	player1->playerFrameCounter = 0;
+	player1->playerNumber = 1;
 	player1MaxFrame = 1;
-	player2RotationSpeed = 2;
+	player2->playerRotationSpeed = 2;
 	
 
-	player1AnimRect.top = 0;
-	player1AnimRect.bottom = player1AnimRect.top + playerSpriteHeight;
-	player1AnimRect.left = (player1Number - 1) * playerSpriteWidth;
-	player1AnimRect.right = player1AnimRect.left + playerSpriteWidth;
+	player1->playerAnimRect.top = 0;
+	player1->playerAnimRect.bottom = player1->playerAnimRect.top + playerSpriteHeight;
+	player1->playerAnimRect.left = (player1->playerNumber - 1) * playerSpriteWidth;
+	player1->playerAnimRect.right = player1->playerAnimRect.left + playerSpriteWidth;
 
 	// Player 2
-	player2Position = D3DXVECTOR2(700, 300);
-	player2Velocity = D3DXVECTOR2(0, 0);
-	player2Acceleration = D3DXVECTOR2(0, 0);
+	player2->playerPosition = D3DXVECTOR2(700, 300);
+	player2->playerVelocity = D3DXVECTOR2(0, 0);
+	player2->playerAcceleration = D3DXVECTOR2(0, 0);
 	player2EnginerForce = 1;
-	player2Direction = 0;
-	player2Mass = 1;
-	player2FrameCounter = 0;
+	player2->playerDirection = 0;
+	player2->playerMass = 1;
+	player2->playerFrameCounter = 0;
 	player2Number = 2;
 	player1MaxFrame = 2;
-	player2RotationSpeed = 2;
+	player2->playerRotationSpeed = 2;
 
-	player2AnimRect.top = 0;
-	player2AnimRect.bottom = player2AnimRect.top + playerSpriteHeight;
-	player2AnimRect.left = (player2Number - 1) * playerSpriteWidth;;
-	player2AnimRect.right = player2AnimRect.left + playerSpriteWidth;
+	player2->playerAnimRect.top = 0;
+	player2->playerAnimRect.bottom = player2->playerAnimRect.top + playerSpriteHeight;
+	player2->playerAnimRect.left = (player2Number - 1) * playerSpriteWidth;;
+	player2->playerAnimRect.right = player2->playerAnimRect.left + playerSpriteWidth;
 	*/
 	
 
@@ -426,15 +390,13 @@ bool WindowIsRunning() {
 }
 
 void GetInput() {
+	//	Get immediate Keyboard Data.
+	dInputKeyboardDevice->GetDeviceState(256, diKeys);
 	//	Acquire the device.
 	dInputKeyboardDevice->Acquire();
 	dInputMouseDevice->Acquire();
 
-
-	//previousDirection = currentDirection;
-
-	//	Get immediate Keyboard Data.
-	dInputKeyboardDevice->GetDeviceState(256, diKeys);
+	//player1 movement
 	if (diKeys[DIK_UP] & 0x80) {
 		if (player1->playerPosition.y == 0) {
 			upKeyPressed = false;
@@ -475,22 +437,55 @@ void GetInput() {
 		}
 	}
 
-	dInputMouseDevice->GetDeviceState(sizeof(mouseState), (LPVOID) &mouseState);
-	mousePosition.x += mouseState.lX;
-	mousePosition.y += mouseState.lY;
-	//cout << "Mouse Position: " << mousePosition.y << " " << mousePosition.x << endl;
-	
-	
+	//player2 movement
+	if (diKeys[DIK_W] & 0x80) {
+		if (player2->playerPosition.y == 0) {
+			wKeyPressed = false;
+		}
+		else {
+			wKeyPressed = true;
+			cout << "W Pressed!" << endl;
+		}
+	}
 
+	if (diKeys[DIK_S] & 0x80) {
+		if (player2->playerPosition.y > WindowHeight - player2->playerSpriteWidth) {
+			sKeyPressed = false;
+		}
+		else {
+			sKeyPressed = true;
+			cout << "S Pressed!" << endl;
+		}
+	}
 
+	if (diKeys[DIK_A] & 0x80) {
+		if (player2->playerPosition.x == 0) {
+			aKeyPressed = false;
+		}
+		else {
+			aKeyPressed = true;
+			cout << "A Pressed!" << endl;
+		}
+	}
+
+	if (diKeys[DIK_D] & 0x80) {
+		if (player2->playerPosition.x > WindowWidth - player2->playerSpriteWidth) {
+			dKeyPressed = false;
+		}
+		else {
+			dKeyPressed = true;
+			cout << "D Pressed!" << endl;
+		}
+	}
+
+	dInputMouseDevice->GetDeviceState(sizeof(mouseState), &mouseState);
 }
 
 void Update(int framesToUpdate) {	
 
 	for (int i = 0; i < framesToUpdate; i++) {
-
-		cout << player1->playerDirection << endl;
-
+		//counter++;
+		//player1
 		if (leftKeyPressed) {
 			player1->playerDirection -= player1->playerRotationSpeed;
 		}
@@ -500,16 +495,24 @@ void Update(int framesToUpdate) {
 		}
 
 		if (upKeyPressed) {
-			player1->playerAcceleration.x = sin(player1->playerDirection * player1->playerEngineForce) / player1->playerMass;
-			player1->playerAcceleration.y = -cos(player1->playerDirection * player1->playerEngineForce) / player1->playerMass;
+			//if (counter % timer->getFPS() / player1SpriteFPS) {
+			//	player1->playerFrameCounter++
+			//}
+			// player1->playerAcceleration.x = sin(player1->playerDirection) * player1->playerEngineForce / player1->playerMass;
+			player1->setPlayerAccelerationX(sin(player1->playerDirection) * player1->playerEngineForce / player1->playerMass);
+			cout << "Direction: " << player1->playerDirection << endl;
+			player1->setPlayerAccelerationY(-cos(player1->playerDirection) * player1->playerEngineForce / player1->playerMass);
+			//player1->playerAcceleration.y = -cos(player1->playerDirection) * player1->playerEngineForce / player1->playerMass;
 		}
 
 		if (downKeyPressed) {
-			player1->playerAcceleration.x = -sin(player1->playerDirection * player1->playerEngineForce) / player1->playerMass;
-			player1->playerAcceleration.y = cos(player1->playerDirection * player1->playerEngineForce) / player1->playerMass;
+			player1->playerAcceleration.x = -sin(player1->playerDirection) * player1->playerEngineForce / player1->playerMass;
+			player1->playerAcceleration.y = cos(player1->playerDirection) * player1->playerEngineForce / player1->playerMass;
 		}
 
 		player1->playerVelocity += player1->playerAcceleration;
+		//friction
+		player1->playerVelocity *= 1 - friction;
 		player1->playerPosition += player1->playerVelocity;
 
 		player1->playerFrameCounter++;
@@ -517,93 +520,115 @@ void Update(int framesToUpdate) {
 			player1->playerFrameCounter = 0;
 		}
 
-		player1->playerAnimRect.top = player1->playerFrameCounter * player1->playerSpriteHeight;
-		player1->playerAnimRect.bottom = player1->playerAnimRect.top + player1->playerSpriteHeight;
 		player1->playerAnimRect.left = (player1->playerNumber - 1) * player1->playerSpriteWidth;
+		player1->playerAnimRect.top = player1->playerFrameCounter * player1->playerSpriteHeight;
 		player1->playerAnimRect.right = player1->playerAnimRect.left + player1->playerSpriteWidth;
-		
+		player1->playerAnimRect.bottom = player1->playerAnimRect.top + player1->playerSpriteHeight;
+
+
+		//player2
+		if (aKeyPressed) {
+			player2->playerDirection -= player2->playerRotationSpeed;
+		}
+
+		if (dKeyPressed) {
+			player2->playerDirection += player2->playerRotationSpeed;
+		}
+
+		if (wKeyPressed) {
+			/*if (counter % timer->getFPS() / player1SpriteFPS) {
+				player1->playerFrameCounter++
+			}*/
+			player2->playerAcceleration.x = sin(player2->playerDirection) * player2->playerEngineForce / player2->playerMass;
+			player2->playerAcceleration.y = -cos(player2->playerDirection) * player2->playerEngineForce / player2->playerMass;
+		}
+		if (sKeyPressed) {
+			player2->playerAcceleration.x = -sin(player2->playerDirection) * player2->playerEngineForce / player2->playerMass;
+			player2->playerAcceleration.y = cos(player2->playerDirection) * player2->playerEngineForce / player2->playerMass;
+		}
+
+		player2->playerVelocity += player2->playerAcceleration;
+		//friction
+		player2->playerVelocity *= 1 - friction;
+		player2->playerPosition += player2->playerVelocity;
+
 		player2->playerFrameCounter++;
 		if (player2->playerFrameCounter > player2->playerMaxFrame) {
 			player2->playerFrameCounter = 0;
 		}
 
-		player2->playerAnimRect.top = player2->playerFrameCounter * player2->playerSpriteHeight;
-		player2->playerAnimRect.bottom = player2->playerAnimRect.top + player2->playerSpriteHeight;
 		player2->playerAnimRect.left = (player2->playerNumber - 1) * player2->playerSpriteWidth;
+		player2->playerAnimRect.top = player2->playerFrameCounter * player2->playerSpriteHeight;
 		player2->playerAnimRect.right = player2->playerAnimRect.left + player2->playerSpriteWidth;
+		player2->playerAnimRect.bottom = player2->playerAnimRect.top + player2->playerSpriteHeight;
 
-		// friction
-		player1->playerVelocity *= 1 - friction;
-
-		//boundary
-		if (player1->playerPosition.x < 0 || player1->playerPosition.x > player1->playerPosition.x > WindowWidth - player1->playerSpriteWidth) {
-			player1->playerVelocity.x *= -1;
+		//boundry
+		if (player1->playerPosition.x <0 || player1->playerPosition.x > WindowWidth - player1->playerSpriteWidth) {
+			player1->playerVelocity.x *= -1.2;
 		}
-
-		if (player1->playerPosition.y < 0 || player1->playerPosition.y > player1->playerPosition.y > WindowHeight - player1->playerSpriteWidth) {
-			player1->playerVelocity.y *= -1;
+		if (player1->playerPosition.y <0 || player1->playerPosition.y > WindowHeight - player1->playerSpriteHeight) {
+			player1->playerVelocity.y *= -1.2;
 		}
-
+		if (player2->playerPosition.x <0 || player2->playerPosition.x > WindowWidth - player2->playerSpriteWidth) {
+			player2->playerVelocity.x *= -1.2;
+		}
+		if (player2->playerPosition.y <0 || player2->playerPosition.y > WindowHeight - player2->playerSpriteHeight) {
+			player2->playerVelocity.y *= -1.2;
+		}
 	}
 
+	//player1
 	leftKeyPressed = false;
 	rightKeyPressed = false;
 	upKeyPressed = false;
+	player1->playerAcceleration = D3DXVECTOR2(0, 0);
 	downKeyPressed = false;
 
-	player1->playerAcceleration = D3DXVECTOR2(0, 0);
+	//palyer2
+	aKeyPressed = false;
+	dKeyPressed = false;
+	wKeyPressed = false;
 	player2->playerAcceleration = D3DXVECTOR2(0, 0);
-
+	sKeyPressed = false;
 }
 
 void Render() {
-    //    Clear the back buffer.
-    d3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(red, green, blue), 1.0f, 0);
+	//	Clear the back buffer.
+	d3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 
-    //    Begin the scene
-    d3dDevice->BeginScene();
+	//	Begin the scene
+	d3dDevice->BeginScene();
 
-    //    To Do:
-    //    Drawing.
-    //    Specify alpha blend will ensure that the sprite will render the background with alpha.
-    spriteBrush->Begin(D3DXSPRITE_ALPHABLEND); //enable alpha value
-    // Mouse
-    spriteBrush->Draw(mouseTexture, &mouseRect, NULL, &mousePosition, D3DCOLOR_XRGB(255, 255, 255));
+	//	To Do:
+	//	Drawing.
+	//	Specify alpha blend will ensure that the sprite will render the background with alpha.
+	spriteBrush->Begin(D3DXSPRITE_ALPHABLEND); //enable alpha value
 
-    D3DXMATRIX mat;
+	D3DXMATRIX mat;
 
-    //draw player 1
-    //D3DXMatrixTransformation2D(&mat, NULL, 0.5f, &player1->playerScaling, &player1->playerSpriteCenter, player1->playerDirection, &player1->playerPosition);
-    // D3DXMatrixTransformation2D(&mat, NULL, 0.5f, &player1Scaling, &player1SpriteCentre, player1Direction, &player1Position);
-    //tell the sprite about the matrix
-    //spriteBrush->SetTransform(&mat);
-    //spriteBrush->Draw(playerTexture, &player1->playerAnimRect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
-    // spriteBrush->Draw(playertexture, &player1AnimRect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
+	//draw player 1
+	D3DXMatrixTransformation2D(&mat, NULL, 0.0, &player1->playerScaling, &player1->playerSpriteCenter, player1->playerDirection, &player1->playerPosition);
+	spriteBrush->SetTransform(&mat);
+	spriteBrush->Draw(playerTexture, &player1->playerAnimRect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
 
-    /*
-    //draw player 2
-    D3DXMatrixTransformation2D(&mat, NULL, 0.5f, &player2Scaling, &player2SpriteCentre, player2Direction, &player2Position);
-    //tell the sprite about the matrix
-    spriteBrush->SetTransform(&mat);
-    spriteBrush->Draw(playertexture, &player2AnimRect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
-    */
+	//draw player 2
+	D3DXMatrixTransformation2D(&mat, NULL, 0.0, &player2->playerScaling, &player2->playerSpriteCenter, player2->playerDirection, &player2->playerPosition);
+	spriteBrush->SetTransform(&mat);
+	spriteBrush->Draw(playerTexture, &player2->playerAnimRect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
 
-    //spriteBrush->Draw(playertexture, &spriteRect, NULL, &player1Position, D3DCOLOR_XRGB(255, 255, 255));
-    //spriteBrush->Draw(mousetexture, &mouseRect, NULL, &mouseposition, D3DCOLOR_XRGB(255, 255, 255));
+	//	End sprite drawing
+	spriteBrush->End();
 
-    //    End sprite drawing
-    spriteBrush->End();
+	//	End the scene
+	d3dDevice->EndScene();
 
-    //    End the scene
-    d3dDevice->EndScene();
-
-    //    Present the back buffer to screen
-    d3dDevice->Present(NULL, NULL, NULL, NULL);
+	//	Present the back buffer to screen
+	d3dDevice->Present(NULL, NULL, NULL, NULL);
 }
 
 void CleanupMyLevel() {
-	mouseTexture->Release();
-	mouseTexture = NULL;
+	//mouseTexture->Release();
+	//mouseTexture = NULL;
 	playerTexture->Release();
 	playerTexture = NULL;
 }

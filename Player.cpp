@@ -1,8 +1,13 @@
+#pragma once
+#include <Windows.h>
+#include <iostream>
+using namespace std;
 #include "Player.h"
 
-void Player::Init() {
+void Player::Init(int playerNumber, int PlayerXPosition, int PlayerYPosition) {
 
     //shared
+    this->playerNumber = playerNumber;
     playerTextureWidth = 64;
     playerTextureHeight = 64;
     playerTextureRow = 2;
@@ -13,7 +18,7 @@ void Player::Init() {
     playerMaxFrame = 1;
 
 
-    playerAnimRect.left = (playerNumber - 1) * playerSpriteWidth;
+    playerAnimRect.left = (this->playerNumber - 1) * playerSpriteWidth;
     playerAnimRect.top = 0;
     playerAnimRect.right = playerAnimRect.left + playerSpriteWidth;
     playerAnimRect.bottom = playerAnimRect.top + playerSpriteHeight;
@@ -23,7 +28,7 @@ void Player::Init() {
     playerColRect.right = playerAnimRect.left + playerSpriteWidth;
     playerColRect.bottom = playerAnimRect.top + playerSpriteHeight;
 
-    playerPosition = D3DXVECTOR2(100, 300);
+    playerPosition = D3DXVECTOR2(PlayerXPosition, PlayerYPosition);
     playerVelocity = D3DXVECTOR2(0, 0);
     playerAcceleration = D3DXVECTOR2(0, 0);
 
@@ -33,4 +38,13 @@ void Player::Init() {
 
     playerScaling = D3DXVECTOR2(1, 1);
     playerSpriteCenter = D3DXVECTOR2(playerSpriteWidth / 2, playerSpriteHeight / 2);
+}
+
+void Player::setPlayerAccelerationX(double X) {
+    playerAcceleration.x = X;
+    cout << "PLAYER.CPP PLAYER ACCELERATION X: " << playerAcceleration.x << " X: " << X << endl;
+}
+
+void Player::setPlayerAccelerationY(double Y) {
+    playerAcceleration.y = Y;
 }
