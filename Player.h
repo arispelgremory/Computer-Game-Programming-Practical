@@ -4,8 +4,8 @@
 #include <d3dx9.h>
 
 class GameObject {
-	protected:
-		int c;
+	public:
+
 };
 
 class Player {

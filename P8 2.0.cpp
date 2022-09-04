@@ -100,23 +100,20 @@ int blue = 0;
 
 //	Window Procedure, for event handling
 LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
-	switch (message)
-	{
+	switch (message){
 		//	The message is post when we destroy the window.
 
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
-	case WM_KEYDOWN:
-	{
-		switch (wParam)
-		{
-		case VK_ESCAPE:
-			PostQuitMessage(0);
-			break;
+	case WM_KEYDOWN: {
+		switch (wParam) {
+			case VK_ESCAPE:
+				PostQuitMessage(0);
+				break;
 		}
-	default:
-		return DefWindowProc(hWnd, message, wParam, lParam);
+		default:
+			return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	return 0;
 	}
@@ -500,7 +497,7 @@ void Update(int framesToUpdate) {
 			//}
 			// player1->playerAcceleration.x = sin(player1->playerDirection) * player1->playerEngineForce / player1->playerMass;
 			player1->setPlayerAccelerationX(sin(player1->playerDirection) * player1->playerEngineForce / player1->playerMass);
-			cout << "Direction: " << player1->playerDirection << endl;
+			cout << "Direction: " << player1->playerDirection << " Engine Force: " << player1->playerEngineForce << " Player Mass: " << player1->playerMass << endl;
 			player1->setPlayerAccelerationY(-cos(player1->playerDirection) * player1->playerEngineForce / player1->playerMass);
 			//player1->playerAcceleration.y = -cos(player1->playerDirection) * player1->playerEngineForce / player1->playerMass;
 		}

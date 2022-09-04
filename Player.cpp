@@ -8,43 +8,44 @@ void Player::Init(int playerNumber, int PlayerXPosition, int PlayerYPosition) {
 
     //shared
     this->playerNumber = playerNumber;
-    playerTextureWidth = 64;
-    playerTextureHeight = 64;
-    playerTextureRow = 2;
-    playerTextureCol = 2;
-    playerSpriteWidth = playerTextureWidth / playerTextureCol;
-    playerSpriteHeight = playerTextureHeight / playerTextureRow;
-    playerSpriteFPS = 10;
-    playerMaxFrame = 1;
+    this->playerTextureWidth = 64;
+    this->playerTextureHeight = 64;
+    this->playerTextureRow = 2;
+    this->playerTextureCol = 2;
+    this->playerSpriteWidth = playerTextureWidth / playerTextureCol;
+    this->playerSpriteHeight = playerTextureHeight / playerTextureRow;
+    this->playerSpriteFPS = 10;
+    this->playerMaxFrame = 1;
 
 
-    playerAnimRect.left = (this->playerNumber - 1) * playerSpriteWidth;
-    playerAnimRect.top = 0;
-    playerAnimRect.right = playerAnimRect.left + playerSpriteWidth;
-    playerAnimRect.bottom = playerAnimRect.top + playerSpriteHeight;
+    this->playerAnimRect.left = (this->playerNumber - 1) * playerSpriteWidth;
+    this->playerAnimRect.top = 0;
+    this->playerAnimRect.right = playerAnimRect.left + playerSpriteWidth;
+    this->playerAnimRect.bottom = playerAnimRect.top + playerSpriteHeight;
 
-    playerColRect.left = 0;
-    playerColRect.top = 0;
-    playerColRect.right = playerAnimRect.left + playerSpriteWidth;
-    playerColRect.bottom = playerAnimRect.top + playerSpriteHeight;
+    this->playerColRect.left = 0;
+    this->playerColRect.top = 0;
+    this->playerColRect.right = playerAnimRect.left + playerSpriteWidth;
+    this->playerColRect.bottom = playerAnimRect.top + playerSpriteHeight;
 
-    playerPosition = D3DXVECTOR2(PlayerXPosition, PlayerYPosition);
-    playerVelocity = D3DXVECTOR2(0, 0);
-    playerAcceleration = D3DXVECTOR2(0, 0);
+    this->playerPosition = D3DXVECTOR2(PlayerXPosition, PlayerYPosition);
+    this->playerVelocity = D3DXVECTOR2(0, 0);
+    this->playerAcceleration = D3DXVECTOR2(0, 0);
 
-    playerMass = 1;
-    playerFrameCounter = 0;
-    playerRotationSpeed = 0.1;
+    this->playerMass = 1;
+    this->playerEngineForce = 0.005;
+    this->playerFrameCounter = 0;
+    this->playerRotationSpeed = 0.005;
 
-    playerScaling = D3DXVECTOR2(1, 1);
-    playerSpriteCenter = D3DXVECTOR2(playerSpriteWidth / 2, playerSpriteHeight / 2);
+    this->playerScaling = D3DXVECTOR2(1, 1);
+    this->playerSpriteCenter = D3DXVECTOR2(playerSpriteWidth / 2, playerSpriteHeight / 2);
 }
 
 void Player::setPlayerAccelerationX(double X) {
-    playerAcceleration.x = X;
-    cout << "PLAYER.CPP PLAYER ACCELERATION X: " << playerAcceleration.x << " X: " << X << endl;
+    this->playerAcceleration.x = X;
+    cout << "PLAYER.CPP PLAYER ACCELERATION X: " << this->playerAcceleration.x << " X: " << X << endl;
 }
 
 void Player::setPlayerAccelerationY(double Y) {
-    playerAcceleration.y = Y;
+    this->playerAcceleration.y = Y;
 }
