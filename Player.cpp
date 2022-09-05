@@ -3,49 +3,84 @@
 #include <iostream>
 using namespace std;
 #include "Player.h"
+#define WindowWidth 800
+#define WindowHeight 600
 
-void Player::Init(int playerNumber, int PlayerXPosition, int PlayerYPosition) {
+void Player::Init(int playerNumber, int playerXPosition, int playerYPosition) {
 
     //shared
-    this->playerNumber = playerNumber;
-    this->playerTextureWidth = 64;
-    this->playerTextureHeight = 64;
-    this->playerTextureRow = 2;
-    this->playerTextureCol = 2;
-    this->playerSpriteWidth = playerTextureWidth / playerTextureCol;
-    this->playerSpriteHeight = playerTextureHeight / playerTextureRow;
-    this->playerSpriteFPS = 10;
-    this->playerMaxFrame = 1;
+    number = playerNumber;
+    textureWidth = 64;
+    textureHeight = 64;
+    textureRow = 2;
+    textureCol = 2;
+    spriteWidth = textureWidth / textureCol;
+    spriteHeight = textureHeight / textureRow;
+    spriteFPS = 10;
+    maxFrame = 1;
 
 
-    this->playerAnimRect.left = (this->playerNumber - 1) * playerSpriteWidth;
-    this->playerAnimRect.top = 0;
-    this->playerAnimRect.right = playerAnimRect.left + playerSpriteWidth;
-    this->playerAnimRect.bottom = playerAnimRect.top + playerSpriteHeight;
+    animRect.left = (number - 1) * spriteWidth;
+    animRect.top = 0;
+    animRect.right = animRect.left + spriteWidth;
+    animRect.bottom = animRect.top + spriteHeight;
 
-    this->playerColRect.left = 0;
-    this->playerColRect.top = 0;
-    this->playerColRect.right = playerAnimRect.left + playerSpriteWidth;
-    this->playerColRect.bottom = playerAnimRect.top + playerSpriteHeight;
+    colRect.left = 0;
+    colRect.top = 0;
+    colRect.right = animRect.left + spriteWidth;
+    colRect.bottom = animRect.top + spriteHeight;
 
-    this->playerPosition = D3DXVECTOR2(PlayerXPosition, PlayerYPosition);
-    this->playerVelocity = D3DXVECTOR2(0, 0);
-    this->playerAcceleration = D3DXVECTOR2(0, 0);
+    position = D3DXVECTOR2(playerXPosition, playerYPosition);
+    acceleration = D3DXVECTOR2(0, 0);
+    frameCounter = 0;
+    mass = 1;
 
-    this->playerMass = 1;
-    this->playerEngineForce = 0.005;
-    this->playerFrameCounter = 0;
-    this->playerRotationSpeed = 0.005;
+    // Player Object
+    velocity = D3DXVECTOR2(0, 0);
+    //this->engineForce = 0.005;
+    playerEngineForce = 0.005;
+    this->SetPlayerEngineForce(0.005);
+    //this->rotationSpeed = 0.005;    
+    this->SetPlayerRotationSpeed(0.005);
 
-    this->playerScaling = D3DXVECTOR2(1, 1);
-    this->playerSpriteCenter = D3DXVECTOR2(playerSpriteWidth / 2, playerSpriteHeight / 2);
+    scaling = D3DXVECTOR2(1, 1);
+    spriteCenter = D3DXVECTOR2(spriteWidth / 2, spriteHeight / 2);
 }
 
 void Player::setPlayerAccelerationX(double X) {
-    this->playerAcceleration.x = X;
-    cout << "PLAYER.CPP PLAYER ACCELERATION X: " << this->playerAcceleration.x << " X: " << X << endl;
+    acceleration.x = X;
 }
 
 void Player::setPlayerAccelerationY(double Y) {
-    this->playerAcceleration.y = Y;
+    acceleration.y = Y;
+}
+
+void StaticObject::Init(int objectNumber) {
+    //shared
+    number = objectNumber;
+    textureWidth = 64;
+    textureHeight = 64;
+    textureRow = 2;
+    textureCol = 2;
+    spriteWidth = textureWidth / textureCol;
+    spriteHeight = textureHeight / textureRow;
+    spriteFPS = 10;
+    maxFrame = 1;
+
+
+    animRect.left = (number - 1) * spriteWidth;
+    animRect.top = 0;
+    animRect.right = animRect.left + spriteWidth;
+    animRect.bottom = animRect.top + spriteHeight;
+
+    colRect.left = 0;
+    colRect.top = 0;
+    colRect.right = animRect.left + spriteWidth;
+    colRect.bottom = animRect.top + spriteHeight;
+
+    position = D3DXVECTOR2(rand() % (WindowWidth - spriteWidth), rand() % (WindowHeight - spriteHeight));
+    mass = 1;
+    frameCounter = 0;
+    scaling = D3DXVECTOR2(1, 1);
+    spriteCenter = D3DXVECTOR2(spriteWidth / 2, spriteHeight / 2);
 }
