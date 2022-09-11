@@ -1,0 +1,26 @@
+﻿  P8.cpp
+  C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\University work\TARUC RST\Y2S1\BACS2224 Computer Game Programming\Practical\Practical2\Practical1\P8.cpp(450,16): warning C4305: '=': truncation from 'double' to 'float'
+E:\University work\TARUC RST\Y2S1\BACS2224 Computer Game Programming\Practical\Practical2\Practical1\P8.cpp(547,64): warning C4804: '>': unsafe use of type 'bool' in operation
+E:\University work\TARUC RST\Y2S1\BACS2224 Computer Game Programming\Practical\Practical2\Practical1\P8.cpp(551,64): warning C4804: '>': unsafe use of type 'bool' in operation
+  Player.cpp
+E:\University work\TARUC RST\Y2S1\BACS2224 Computer Game Programming\Practical\Practical2\Practical1\Player.cpp(31,30): warning C4305: '=': truncation from 'double' to 'float'
+E:\University work\TARUC RST\Y2S1\BACS2224 Computer Game Programming\Practical\Practical2\Practical1\Player.cpp(34,80): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+E:\University work\TARUC RST\Y2S1\BACS2224 Computer Game Programming\Practical\Practical2\Practical1\Player.cpp(34,56): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+  Generating Code...
+P8.obj : error LNK2019: unresolved external symbol Direct3DCreate9 referenced in function "void __cdecl CreateMyDX(void)" (?CreateMyDX@@YAXXZ)
+P8.obj : error LNK2019: unresolved external symbol D3DXCreateSprite referenced in function "void __cdecl CreateMyDX(void)" (?CreateMyDX@@YAXXZ)
+P8.obj : error LNK2019: unresolved external symbol D3DXCreateFontA referenced in function "void __cdecl CreateMyDX(void)" (?CreateMyDX@@YAXXZ)
+P8.obj : error LNK2019: unresolved external symbol D3DXCreateLine referenced in function "void __cdecl CreateMyDX(void)" (?CreateMyDX@@YAXXZ)
+P8.obj : error LNK2019: unresolved external symbol D3DXCreateTextureFromFileA referenced in function "void __cdecl CreateMyDInput(void)" (?CreateMyDInput@@YAXXZ)
+P8.obj : error LNK2019: unresolved external symbol DirectInput8Create referenced in function "void __cdecl CreateMyDInput(void)" (?CreateMyDInput@@YAXXZ)
+P8.obj : error LNK2001: unresolved external symbol IID_IDirectInput8A
+P8.obj : error LNK2001: unresolved external symbol GUID_SysMouse
+P8.obj : error LNK2001: unresolved external symbol GUID_SysKeyboard
+P8.obj : error LNK2001: unresolved external symbol c_dfDIMouse
+P8.obj : error LNK2001: unresolved external symbol c_dfDIKeyboard
+C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\lib\x86\d3d9.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\lib\x86\d3dx9.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\lib\x86\dinput8.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\lib\x86\dxguid.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+E:\University work\TARUC RST\Y2S1\BACS2224 Computer Game Programming\Practical\Practical2\x64\Debug\Practical1.exe : fatal error LNK1120: 11 unresolved externals
